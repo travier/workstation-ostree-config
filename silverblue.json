@@ -1,0 +1,4 @@
+{
+    "ref": "fedora/rawhide/x86_64/workstation",
+    "include": "gnome-desktop-pkgs.json"
+}
