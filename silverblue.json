@@ -1,4 +1,4 @@
 {
-    "ref": "fedora/rawhide/x86_64/workstation",
+    "ref": "fedora/rawhide/x86_64/silverblue",
     "include": "gnome-desktop-pkgs.json"
 }
