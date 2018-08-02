@@ -1,0 +1,8 @@
+{
+    "ref": "fedora/rawhide/x86_64/xifengite",
+    "include": "xfce-desktop-pkgs.json",
+
+    "packages": [
+        "xdg-desktop-portal-gtk"
+    ]
+}
