@@ -166,10 +166,10 @@ desktop_blacklist:
     - kruler
     - ksshaskpass
     - kwrite
-    - libreoffice-kde
     - spectacle
     # Misc
     - adwaita-gtk2-theme
+    - libreoffice-kde
     - colord-kde
     - firewall-config
     - kcm_systemd
