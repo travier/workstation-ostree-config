@@ -192,18 +192,18 @@ desktop_blacklist:
   xfce-desktop:
     # Incompatible with ostree for various reasons
     - abrt-desktop
+    - dnfdragora-updater
+    # Misc
+    - alsa-utils
+    - openssh-askpass
+    - firewall-config
+    - tumbler
+    - vim-enhanced
+    # ?
+    - rodent-icon-theme
     # Non-critical apps -> Flatpak
     - Thunar
-    - alsa-utils
-    - dnfdragora-updater
     - fros-recordmydesktop
     - thunar-archive-plugin
     - thunar-media-tags-plugin
     - thunar-volman
-    - tumbler
-    - vim-enhanced
-    # Misc
-    - openssh-askpass
-    - firewall-config
-    # ?
-    - rodent-icon-theme
