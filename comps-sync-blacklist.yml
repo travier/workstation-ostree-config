@@ -201,3 +201,9 @@ desktop_blacklist:
     - vim-enhanced
     # ?
     - rodent-icon-theme
+    # Non-critical apps -> Flatpak
+    - Thunar
+    - fros-recordmydesktop
+    - thunar-archive-plugin
+    - thunar-media-tags-plugin
+    - thunar-volman
