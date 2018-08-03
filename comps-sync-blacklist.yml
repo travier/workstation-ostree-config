@@ -140,6 +140,28 @@ desktop_blacklist:
     - cups-pk-helper
     - dnfdragora
     - plasma-pk-updates
+    # Misc
+    - adwaita-gtk2-theme
+    - libreoffice-kde
+    - colord-kde
+    - firewall-config
+    - kcm_systemd
+    - kdegraphics-thumbnailers
+    - keditbookmarks
+    - khelpcenter
+    - kmag
+    - kmenuedit
+    - kwebkitpart
+    - pinentry-qt
+    - plasma-desktop-doc
+    - plasma-nm-l2tp
+    - plasma-nm-openconnect
+    - plasma-nm-openswan
+    - plasma-nm-openvpn
+    - plasma-nm-pptp
+    - plasma-nm-vpnc
+    - plasma-workspace-geolocation
+    - qt-at-spi
     # Non-critical apps -> Flatpak
     - akregator
     - cagibi
@@ -167,28 +189,6 @@ desktop_blacklist:
     - ksshaskpass
     - kwrite
     - spectacle
-    # Misc
-    - adwaita-gtk2-theme
-    - libreoffice-kde
-    - colord-kde
-    - firewall-config
-    - kcm_systemd
-    - kdegraphics-thumbnailers
-    - keditbookmarks
-    - khelpcenter
-    - kmag
-    - kmenuedit
-    - kwebkitpart
-    - pinentry-qt
-    - plasma-desktop-doc
-    - plasma-nm-l2tp
-    - plasma-nm-openconnect
-    - plasma-nm-openswan
-    - plasma-nm-openvpn
-    - plasma-nm-pptp
-    - plasma-nm-vpnc
-    - plasma-workspace-geolocation
-    - qt-at-spi
   xfce-desktop:
     # Incompatible with ostree for various reasons
     - abrt-desktop
