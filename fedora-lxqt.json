@@ -1,0 +1,10 @@
+{
+    "ref": "fedora/rawhide/${basearch}/lxqt",
+
+    "include": "lxqt-desktop-pkgs.json",
+
+    "packages": [
+        "libqtxdg",
+        "xdg-desktop-portal-kde"
+    ]
+}
