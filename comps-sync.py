@@ -20,9 +20,9 @@ args = parser.parse_args()
 
 print("Syncing packages common to all desktops:")
 
-base_pkgs_path = 'fedora-common-ostree-pkgs.json'
+base_pkgs_path = 'fedora-common-ostree-pkgs.yaml'
 with open(base_pkgs_path) as f:
-    manifest = json.load(f)
+    manifest = yaml.safe_load(f)
 
 with open('comps-sync-blacklist.yml') as f:
     doc = yaml.safe_load(f)
@@ -112,13 +112,18 @@ else:
         (req, groups) = ws_added[pkg]
         print('    {} ({}, groups: {})'.format(pkg, format_pkgtype(req), ', '.join(groups)))
 
-if (n_manifest_new > 0 or n_comps_new > 0) and args.save:
-    manifest['packages'] = sorted(manifest_packages)
-    with open(base_pkgs_path, 'w') as f:
-        json.dump(manifest, f, indent=4, sort_keys=True)
-        f.write('\n')
-        print("Wrote {}".format(base_pkgs_path))
+def write_manifest(fpath, pkgs, include=None):
+    with open(fpath, 'w') as f:
+        f.write("# DO NOT EDIT! This content is generated from comps-sync.py\n")
+        if include is not None:
+            f.write("include: {}\n".format(include))
+        f.write("packages:\n")
+        for pkg in sorted(pkgs):
+            f.write("  - {}\n".format(pkg))
+        print("Wrote {}".format(fpath))
 
+if (n_manifest_new > 0 or n_comps_new > 0) and args.save:
+    write_manifest(base_pkgs_path, manifest_packages)
 
 # Generate treefiles for all desktops
 for desktop in [ 'gnome-desktop', 'kde-desktop', 'xfce-desktop', 'lxqt-desktop', 'deepin-desktop', 'pantheon-desktop' ]:
@@ -130,7 +135,7 @@ for desktop in [ 'gnome-desktop', 'kde-desktop', 'xfce-desktop', 'lxqt-desktop',
         manifest = yaml.safe_load(f)
 
     try:
-        manifest_pkgs = set(manifest['packages']) if manifest['packages'] is not None else set()
+        manifest_pkgs = set(manifest['packages'])
     except:
         manifest_pkgs = set()
 
@@ -172,16 +177,6 @@ for desktop in [ 'gnome-desktop', 'kde-desktop', 'xfce-desktop', 'lxqt-desktop',
         for pkg in sorted(desktop_pkgs_added):
             print('    {}'.format(pkg))
             manifest_pkgs.add(pkg)
-
-    def write_manifest(fpath, pkgs, include=None):
-        with open(fpath, 'w') as f:
-            f.write("# DO NOT EDIT! This content is generated from comps-sync.py\n")
-            if include is not None:
-                f.write("include: {}\n".format(include))
-            f.write("packages:\n")
-            for pkg in sorted(pkgs):
-                f.write("  - {}\n".format(pkg))
-            print("Wrote {}".format(fpath))
 
     # Update manifest
     if (n_manifest_new > 0 or n_comps_new > 0) and args.save:
