@@ -23,6 +23,7 @@ print("Syncing packages common to all desktops:")
 base_pkgs_path = 'fedora-common-ostree-pkgs.yaml'
 with open(base_pkgs_path) as f:
     manifest = yaml.safe_load(f)
+manifest_packages = set(manifest['packages'])
 
 with open('comps-sync-blacklist.yml') as f:
     doc = yaml.safe_load(f)
@@ -31,11 +32,6 @@ with open('comps-sync-blacklist.yml') as f:
     comps_blacklist_groups = doc['blacklist_groups']
     comps_desktop_blacklist = doc['desktop_blacklist']
 
-manifest_packages = set(manifest['packages'])
-
-comps_unknown = set()
-
-comps_packages = set()
 # Parse comps, and build up a set of all packages so we
 # can find packages not listed in comps *at all*, beyond
 # just the workstation environment.
@@ -72,6 +68,7 @@ ws_ostree_pkgs = set()
 for pkg in comps.groups_match(id=ws_ostree_name)[0].packages:
     ws_ostree_pkgs.add(pkg.name)
 
+comps_unknown = set()
 for pkg in manifest_packages:
     if (pkg not in comps_whitelist and
         pkg not in ws_pkgs and
@@ -133,11 +130,7 @@ for desktop in [ 'gnome-desktop', 'kde-desktop', 'xfce-desktop', 'lxqt-desktop',
     manifest_path = '{}-pkgs.yaml'.format(desktop)
     with open(manifest_path) as f:
         manifest = yaml.safe_load(f)
-
-    try:
-        manifest_pkgs = set(manifest['packages'])
-    except:
-        manifest_pkgs = set()
+    manifest_pkgs = set(manifest['packages'])
 
     # Filter packages in the comps desktop group using the blacklist
     comps_group_pkgs = set()
