@@ -185,10 +185,4 @@ for desktop in [ 'gnome-desktop', 'kde-desktop', 'xfce-desktop', 'lxqt-desktop',
 
     # Update manifest
     if (n_manifest_new > 0 or n_comps_new > 0) and args.save:
-        with open(manifest_path, 'w') as f:
-            f.write("# DO NOT EDIT! This content is generated from comps-sync.py\n")
-            f.write("include: fedora-common-ostree.json\n")
-            f.write("packages:\n")
-            for pkg in sorted(manifest_pkgs):
-                f.write("  - {}\n".format(pkg))
-            print("Wrote {}".format(manifest_path))
+        write_manifest(manifest_path, manifest_pkgs, include="fedora-common-ostree.json")
