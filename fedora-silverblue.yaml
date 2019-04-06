@@ -1,4 +1,4 @@
-include: gnome-desktop-pkgs.json
+include: gnome-desktop-pkgs.yaml
 ref: fedora/30/${basearch}/silverblue
 rojig:
   name: fedora-silverblue

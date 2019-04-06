@@ -1,4 +1,4 @@
-include: pantheon-desktop-pkgs.json
+include: pantheon-desktop-pkgs.yaml
 ref: fedora/30/${basearch}/pantheon
 rojig:
   name: fedora-pantheon

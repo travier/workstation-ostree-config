@@ -1,4 +1,4 @@
-include: xfce-desktop-pkgs.json
+include: xfce-desktop-pkgs.yaml
 ref: fedora/30/${basearch}/xfce
 rojig:
   name: fedora-xfce
