@@ -18,11 +18,12 @@ parser.add_argument("src", help="Source path")
 
 args = parser.parse_args()
 
-print("Syncing packages common to all ostree based desktop versions:")
+print("Syncing packages common to all desktops:")
 
-base_pkgs_path = 'fedora-common-ostree-pkgs.json'
+base_pkgs_path = 'fedora-common-ostree-pkgs.yaml'
 with open(base_pkgs_path) as f:
-    manifest = json.load(f)
+    manifest = yaml.safe_load(f)
+manifest_packages = set(manifest['packages'])
 
 with open('comps-sync-blacklist.yml') as f:
     doc = yaml.safe_load(f)
@@ -31,12 +32,6 @@ with open('comps-sync-blacklist.yml') as f:
     comps_blacklist_groups = doc['blacklist_groups']
     comps_desktop_blacklist = doc['desktop_blacklist']
 
-manifest_packages = set(manifest['packages'])
-
-comps_unknown = set()
-
-comps_packages = set()
-workstation_product_packages = set()
 # Parse comps, and build up a set of all packages so we
 # can find packages not listed in comps *at all*, beyond
 # just the workstation environment.
@@ -73,6 +68,7 @@ ws_ostree_pkgs = set()
 for pkg in comps.groups_match(id=ws_ostree_name)[0].packages:
     ws_ostree_pkgs.add(pkg.name)
 
+comps_unknown = set()
 for pkg in manifest_packages:
     if (pkg not in comps_whitelist and
         pkg not in ws_pkgs and
@@ -82,11 +78,11 @@ for pkg in manifest_packages:
 # Look for packages in the manifest but not in comps at all
 n_manifest_new = len(comps_unknown)
 if n_manifest_new == 0:
-    print("All manifest packages are already listed in comps.")
+    print("  - All manifest packages are already listed in comps.")
 else:
-    print("{} packages not in {}:".format(n_manifest_new, ws_env_name))
+    print("  - {} packages not in {}:".format(n_manifest_new, ws_env_name))
     for pkg in sorted(comps_unknown):
-        print('  ' + pkg)
+        print('    {}'.format(pkg))
         manifest_packages.remove(pkg)
 
 # Look for packages in workstation but not in the manifest
@@ -106,78 +102,75 @@ def format_pkgtype(n):
 
 n_comps_new = len(ws_added)
 if n_comps_new == 0:
-    print("All comps packages are already listed in manifest.")
+    print("  - All comps packages are already listed in manifest.")
 else:
-    print("{} packages not in manifest:".format(n_comps_new))
+    print("  - {} packages not in manifest:".format(n_comps_new))
     for pkg in sorted(ws_added):
         (req, groups) = ws_added[pkg]
-        print('  {} ({}, groups: {})'.format(pkg, format_pkgtype(req), ', '.join(groups)))
+        print('    {} ({}, groups: {})'.format(pkg, format_pkgtype(req), ', '.join(groups)))
+
+def write_manifest(fpath, pkgs, include=None):
+    with open(fpath, 'w') as f:
+        f.write("# DO NOT EDIT! This content is generated from comps-sync.py\n")
+        if include is not None:
+            f.write("include: {}\n".format(include))
+        f.write("packages:\n")
+        for pkg in sorted(pkgs):
+            f.write("  - {}\n".format(pkg))
+        print("Wrote {}".format(fpath))
 
 if (n_manifest_new > 0 or n_comps_new > 0) and args.save:
-    manifest['packages'] = sorted(manifest_packages)
-    with open(base_pkgs_path, 'w') as f:
-        json.dump(manifest, f, indent=4, sort_keys=True)
-        f.write('\n')
-        print("Wrote {}".format(base_pkgs_path))
-
+    write_manifest(base_pkgs_path, manifest_packages)
 
 # Generate treefiles for all desktops
 for desktop in [ 'gnome-desktop', 'kde-desktop', 'xfce-desktop', 'lxqt-desktop' ]:
     print()
-    print("Syncing packages for {} specific version:".format(desktop))
+    print("Syncing packages for {}:".format(desktop))
 
-    base_pkgs_path = '{}-pkgs.json'.format(desktop)
-    with open(base_pkgs_path) as f:
-        manifest = json.load(f)
+    manifest_path = '{}-pkgs.yaml'.format(desktop)
+    with open(manifest_path) as f:
+        manifest = yaml.safe_load(f)
+    manifest_pkgs = set(manifest['packages'])
 
-    manifest_packages = set(manifest['packages'])
-    ws_ostree_name = desktop
-
-    comps_unknown = set()
-    comps_packages = set()
-    workstation_product_packages = set()
-
-    # Parse the desktop group
-    ws_pkgs = set()
+    # Filter packages in the comps desktop group using the blacklist
+    comps_group_pkgs = set()
     for pkg in comps.groups_match(id=desktop)[0].packages:
         pkgname = pkg.name
-        blacklist = comps_desktop_blacklist.get(ws_ostree_name, set())
+        blacklist = comps_desktop_blacklist.get(desktop, set())
         if pkgname in blacklist:
             continue
-        ws_pkgs.add(pkg.name)
+        comps_group_pkgs.add(pkg.name)
 
-    for pkg in manifest_packages:
-        if pkg not in ws_pkgs:
+    # Look for packages in the manifest but not in comps group
+    comps_unknown = set()
+    for pkg in manifest_pkgs:
+        if pkg not in comps_group_pkgs:
             comps_unknown.add(pkg)
 
-    # Look for packages in the manifest but not in comps at all
     n_manifest_new = len(comps_unknown)
     if n_manifest_new == 0:
-        print("All manifest packages are already listed in comps.")
+        print("  - All manifest packages are already listed in comps.")
     else:
-        print("{} packages not in {}:".format(n_manifest_new, ws_ostree_name))
+        print("  - {} packages not in {} comps group:".format(n_manifest_new, desktop))
         for pkg in sorted(comps_unknown):
-            print('  ' + pkg)
-            manifest_packages.remove(pkg)
+            print('    {}'.format(pkg))
+            manifest_pkgs.remove(pkg)
 
     # Look for packages in comps but not in the manifest
-    ws_added = set()
-    for pkg in ws_pkgs:
-        if pkg not in manifest_packages:
-            ws_added.add(pkg)
-            manifest_packages.add(pkg)
+    desktop_pkgs_added = set()
+    for pkg in comps_group_pkgs:
+        if pkg not in manifest_pkgs:
+            desktop_pkgs_added.add(pkg)
 
-    n_comps_new = len(ws_added)
+    n_comps_new = len(desktop_pkgs_added)
     if n_comps_new == 0:
-        print("All comps packages are already listed in manifest.")
+        print("  - All comps packages are already listed in manifest.")
     else:
-        print("{} packages not in manifest:".format(n_comps_new))
-        for pkg in sorted(ws_added):
-            print('  {}'.format(pkg))
+        print("  - {} packages not in {} manifest:".format(n_comps_new, desktop))
+        for pkg in sorted(desktop_pkgs_added):
+            print('    {}'.format(pkg))
+            manifest_pkgs.add(pkg)
 
+    # Update manifest
     if (n_manifest_new > 0 or n_comps_new > 0) and args.save:
-        manifest['packages'] = sorted(manifest_packages)
-        with open(base_pkgs_path, 'w') as f:
-            json.dump(manifest, f, indent=4, sort_keys=True)
-            f.write('\n')
-            print("Wrote {}".format(base_pkgs_path))
+        write_manifest(manifest_path, manifest_pkgs, include="fedora-common-ostree.json")
