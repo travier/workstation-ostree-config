@@ -173,4 +173,4 @@ for desktop in [ 'gnome-desktop', 'kde-desktop', 'xfce-desktop', 'lxqt-desktop',
 
     # Update manifest
     if (n_manifest_new > 0 or n_comps_new > 0) and args.save:
-        write_manifest(manifest_path, manifest_pkgs, include="fedora-common-ostree.json")
+        write_manifest(manifest_path, manifest_pkgs, include="fedora-common-ostree.yaml")
