@@ -14,3 +14,4 @@ packages:
 
 repos:
   - fedora-30
+  - fedora-30-updates
