@@ -1,7 +1,7 @@
 include: fedora-common-ostree.yaml
 ref: fedora/30/${basearch}/base
 rojig:
-  name: fedora-sway
+  name: fedora-base
   summary: "Fedora base image for alternative DE"
   license: MIT
 packages:
