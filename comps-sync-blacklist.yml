@@ -35,6 +35,7 @@ blacklist:
     - lsvpd
   base-x:
     # These are for arm...need to handle arch-specific bits
+    - xorg-x11-drv-armada
     - xorg-x11-drv-armsoc
     - xorg-x11-drv-omap
   workstation-product:
