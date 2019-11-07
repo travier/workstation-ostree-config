@@ -1,0 +1,16 @@
+include: fedora-common-ostree.yaml
+ref: fedora/31/${basearch}/base
+rojig:
+  name: fedora-base
+  summary: "Fedora base image for alternative DE"
+  license: MIT
+packages:
+  # XWayland support
+  - xorg-x11-server-Xwayland
+  # Portals for Flatpak
+  - xdg-desktop-portal
+  - xdg-desktop-portal-gtk
+
+repos:
+  - fedora-31
+  - fedora-31-updates
