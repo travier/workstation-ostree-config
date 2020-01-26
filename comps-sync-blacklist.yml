@@ -111,6 +111,8 @@ blacklist:
     # x86 specific packages. Added back by fedora-common-ostree.yaml
     - mcelog
     - microcode_ctl
+    # Use podman or toolbox instead
+    - scl-utils
   networkmanager-submodules:
     # Let's use the builtin one by default
     - dhcp-client

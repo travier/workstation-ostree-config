@@ -176,7 +176,6 @@ packages:
   - rpm
   - rsync
   - samba-client
-  - scl-utils
   - selinux-policy-targeted
   - setup
   - shadow-utils
