@@ -1,0 +1,26 @@
+include: fedora-common-ostree.yaml
+ref: fedora/30/${basearch}/sway
+rojig:
+  name: fedora-sway
+  summary: "Fedora Sway base image"
+  license: MIT
+packages:
+  # Sway
+  - mako
+  - sway
+  - swayidle
+  - swaylock
+  - wayland-protocols
+  - wlroots
+  # Default terminal
+  - rxvt-unicode-256
+  # XWayland support
+  - xorg-x11-server-Xwayland
+  # Portals for Flatpak
+  - xdg-desktop-portal
+  - xdg-desktop-portal-gtk
+
+repos:
+  - fedora-30
+  - fedora-30-updates
+  - group_sway-sig-sway-desktop-fedora-30

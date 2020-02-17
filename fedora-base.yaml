@@ -10,6 +10,10 @@ packages:
   # Portals for Flatpak
   - xdg-desktop-portal
   - xdg-desktop-portal-gtk
+  # Various missing packages due to no default desktop installation
+  # - dmraid
+  # - f30-backgrounds-base
+  # - dosfstools
 
 repos:
   - fedora-30

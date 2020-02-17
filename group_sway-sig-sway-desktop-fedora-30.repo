@@ -1,0 +1,10 @@
+[group_sway-sig-sway-desktop]
+name=Copr repo for sway-desktop owned by @sway-sig
+baseurl=https://copr-be.cloud.fedoraproject.org/results/@sway-sig/sway-desktop/fedora-$releasever-$basearch/
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://copr-be.cloud.fedoraproject.org/results/@sway-sig/sway-desktop/pubkey.gpg
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
