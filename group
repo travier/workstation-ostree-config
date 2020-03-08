@@ -48,3 +48,4 @@ systemd-network:x:990:
 systemd-resolve:x:989:
 systemd-bus-proxy:x:988:
 cockpit-ws:x:987:
+colord:x:990:
