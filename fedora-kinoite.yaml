@@ -15,5 +15,8 @@ packages:
   # Provide an archive manager by default
   - ark
 
+exclude-packages:
+  - python3-unbound
+
 repos:
   - fedora-32
