@@ -4,6 +4,11 @@ rojig:
   name: fedora-base
   summary: "Fedora base image for alternative DE"
   license: MIT
+
+check-passwd: { type: file, filename: passwd.base }
+check-groups: { type: file, filename: group.base }
+preserve-passwd: true
+
 packages:
   # XWayland support
   - xorg-x11-server-Xwayland

@@ -4,6 +4,11 @@ rojig:
   name: fedora-xfce
   summary: "Fedora XFCE base image"
   license: MIT
+
+check-passwd: { type: file, filename: passwd.xfce }
+check-groups: { type: file, filename: group.xfce }
+preserve-passwd: true
+
 packages:
   # Portals for Flatpak
   - xdg-desktop-portal-gtk

@@ -4,6 +4,11 @@ rojig:
   name: fedora-lxqt
   summary: "Fedora LXQt base image"
   license: MIT
+
+check-passwd: { type: file, filename: passwd.lxqt }
+check-groups: { type: file, filename: group.lxqt }
+preserve-passwd: true
+
 packages:
   - libqtxdg
   # Portals for Flatpak

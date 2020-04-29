@@ -4,6 +4,11 @@ rojig:
   name: fedora-deepin
   summary: "Fedora Deepin base image"
   license: MIT
+
+check-passwd: { type: file, filename: passwd.deepin }
+check-groups: { type: file, filename: group.deepin }
+preserve-passwd: true
+
 packages:
 
 repos:

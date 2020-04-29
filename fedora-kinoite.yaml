@@ -4,6 +4,11 @@ rojig:
   name: fedora-kde
   summary: "Fedora Kinoite (KDE) base image"
   license: MIT
+
+check-passwd: { type: file, filename: passwd.kinoite }
+check-groups: { type: file, filename: group.kinoite }
+preserve-passwd: true
+
 packages:
   # Wayland support
   - kwayland-integration

@@ -4,6 +4,11 @@ rojig:
   name: fedora-pantheon
   summary: "Fedora Pantheon base image"
   license: MIT
+
+check-passwd: { type: file, filename: passwd.pantheon }
+check-groups: { type: file, filename: group.pantheon }
+preserve-passwd: true
+
 packages:
   - elementary-files
   - elementary-greeter

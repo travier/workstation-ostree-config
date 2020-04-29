@@ -4,6 +4,11 @@ rojig:
   name: fedora-silverblue
   summary: "Fedora Silverblue base image"
   license: MIT
+
+check-passwd: { type: file, filename: passwd.siverblue }
+check-groups: { type: file, filename: group.silverblue }
+preserve-passwd: true
+
 packages:
   - desktop-backgrounds-gnome
   - gnome-shell-extension-background-logo
