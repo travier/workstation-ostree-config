@@ -5,6 +5,29 @@ rojig:
   summary: "Fedora Pantheon base image"
   license: MIT
 packages:
+  - elementary-files
+  - elementary-greeter
+  - elementary-icon-theme
+  - elementary-shortcut-overlay
+  - elementary-sound-theme
+  - elementary-terminal
+  - elementary-theme
+  - elementary-wallpapers
+  - switchboard
+  - switchboard-plug-a11y
+  - switchboard-plug-about
+  - switchboard-plug-applications
+  - switchboard-plug-bluetooth
+  - switchboard-plug-display
+  - switchboard-plug-keyboard
+  - switchboard-plug-mouse-touchpad
+  - switchboard-plug-networking
+  - switchboard-plug-notifications
+  - switchboard-plug-onlineaccounts
+  - switchboard-plug-pantheon-shell
+  - switchboard-plug-printers
+  - switchboard-plug-sharing
+  - switchboard-plug-sound
 
 repos:
   - fedora-31
