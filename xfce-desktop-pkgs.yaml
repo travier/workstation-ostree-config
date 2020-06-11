@@ -1,14 +1,11 @@
 # DO NOT EDIT! This content is generated from comps-sync.py
 include: fedora-common-ostree.yaml
 packages:
-  - NetworkManager-adsl
   - NetworkManager-openconnect-gnome
   - NetworkManager-openvpn-gnome
-  - NetworkManager-ppp
   - NetworkManager-pptp-gnome
   - NetworkManager-ssh-gnome
   - NetworkManager-vpnc-gnome
-  - NetworkManager-wwan
   - Thunar
   - adwaita-gtk2-theme
   - adwaita-icon-theme
