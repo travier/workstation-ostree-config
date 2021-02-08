@@ -7,6 +7,10 @@ rojig:
 packages:
   # Portals for Flatpak
   - xdg-desktop-portal-gtk
+
+# exclude-packages:
+#   - python3-unbound
+
 repos:
   - fedora-33
   - fedora-33-updates
