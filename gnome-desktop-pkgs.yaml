@@ -51,6 +51,7 @@ packages:
   - libproxy-mozjs
   - librsvg2
   - libsane-hpaio
+  - mesa-dri-drivers
   - mesa-libEGL
   - mousetweaks
   - nautilus
