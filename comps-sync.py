@@ -131,13 +131,23 @@ else:
 if (n_manifest_new > 0 or n_comps_new > 0) and args.save:
     write_manifest(base_pkgs_path, manifest_packages)
 
+# List of comps groups used for each desktop
+desktops_comps_groups = {
+    "gnome": ["gnome-desktop"],
+    "kde": ["kde-desktop"],
+    "xfce": ["xfce-desktop"],
+    "lxqt": ["lxqt-desktop"],
+    "deepin": ["deepin-desktop"],
+    "pantheon": ["pantheon-desktop"],
+    "mate": ["mate-desktop"]
+}
+
 # Generate treefiles for all desktops
-for desktop in [ 'gnome-desktop', 'kde-desktop', 'xfce-desktop',
-        'lxqt-desktop', 'deepin-desktop', 'pantheon-desktop', 'mate-desktop']:
+for desktop, groups in desktops_comps_groups.items():
     print()
     print("Syncing packages for {}:".format(desktop))
 
-    manifest_path = '{}-pkgs.yaml'.format(desktop)
+    manifest_path = '{}-desktop-pkgs.yaml'.format(desktop)
     with open(manifest_path, encoding='UTF-8') as f:
         manifest = yaml.safe_load(f)
     manifest_packages = set(manifest['packages'])
@@ -145,12 +155,15 @@ for desktop in [ 'gnome-desktop', 'kde-desktop', 'xfce-desktop',
     # Filter packages in the comps groups associated with a given desktop using
     # the per group exclude_list comps_group_pkgs = set()
     comps_group_pkgs = set()
-    for pkg in comps.groups_match(id=desktop)[0].packages:
-        pkgname = pkg.name
-        exclude_list = comps_desktop_exclude_list.get(desktop, set())
-        if pkgname in exclude_list or is_exclude_listed(pkgname):
-            continue
-        comps_group_pkgs.add(pkg.name)
+    for group in groups:
+        for pkg in comps.groups_match(id=group)[0].packages:
+            pkgname = pkg.name
+            exclude_list = comps_desktop_exclude_list.get(group, set())
+            if exclude_list is None:
+                exclude_list = set()
+            if pkgname in exclude_list or is_exclude_listed(pkgname):
+                continue
+            comps_group_pkgs.add(pkg.name)
 
     # Look for packages in the manifest but not in comps group
     comps_unknown = set()
