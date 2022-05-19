@@ -1,27 +1,28 @@
 #!/usr/bin/python3
 # Usage: ./comps-sync.py /path/to/comps-f37.xml.in
 #
-# Can both remove packages from the manifest
-# which are not mentioned in comps, and add packages from
-# comps.
+# Can both remove packages from the manifest which are not mentioned in comps,
+# and add packages from comps.
 
-import os, sys, subprocess, argparse, shlex, json, yaml, re
+import argparse
+import re
+import sys
+import yaml
 import libcomps
 
 def fatal(msg):
-    print >>sys.stderr, msg
+    print(msg, file = sys.stderr)
     sys.exit(1)
 
 def format_pkgtype(n):
     if n == libcomps.PACKAGE_TYPE_DEFAULT:
         return 'default'
-    elif n == libcomps.PACKAGE_TYPE_MANDATORY:
+    if n == libcomps.PACKAGE_TYPE_MANDATORY:
         return 'mandatory'
-    else:
-        assert False
+    assert False
 
 def write_manifest(fpath, pkgs, include=None):
-    with open(fpath, 'w') as f:
+    with open(fpath, 'w', encoding='UTF-8') as f:
         f.write("# DO NOT EDIT! This content is generated from comps-sync.py\n")
         if include is not None:
             f.write("include: {}\n".format(include))
@@ -39,11 +40,11 @@ args = parser.parse_args()
 print("Syncing packages common to all desktops:")
 
 base_pkgs_path = 'fedora-common-ostree-pkgs.yaml'
-with open(base_pkgs_path) as f:
+with open(base_pkgs_path, encoding='UTF-8') as f:
     manifest = yaml.safe_load(f)
 manifest_packages = set(manifest['packages'])
 
-with open('comps-sync-exclude-list.yml') as f:
+with open('comps-sync-exclude-list.yml', encoding='UTF-8') as f:
     doc = yaml.safe_load(f)
     comps_exclude_list = doc['exclude_list']
     comps_include_list = doc['include_list']
@@ -137,11 +138,12 @@ for desktop in [ 'gnome-desktop', 'kde-desktop', 'xfce-desktop',
     print("Syncing packages for {}:".format(desktop))
 
     manifest_path = '{}-pkgs.yaml'.format(desktop)
-    with open(manifest_path) as f:
+    with open(manifest_path, encoding='UTF-8') as f:
         manifest = yaml.safe_load(f)
     manifest_packages = set(manifest['packages'])
 
-    # Filter packages in the comps desktop group using the exclude_list
+    # Filter packages in the comps groups associated with a given desktop using
+    # the per group exclude_list comps_group_pkgs = set()
     comps_group_pkgs = set()
     for pkg in comps.groups_match(id=desktop)[0].packages:
         pkgname = pkg.name
