@@ -21,8 +21,6 @@ packages:
   - kcalc
   - kwrite
   - okular
-  # Manually add missing packages for missing input-methods
-  - imsettings-systemd
 
 # Make sure the following are not pulled in when Recommended by other packages
 exclude-packages:
