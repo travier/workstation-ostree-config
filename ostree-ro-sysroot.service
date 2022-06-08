@@ -1,0 +1,11 @@
+[Unit]
+Description=Progressively update an existing system to use a read only sysroot
+Documentation=https://fedoraproject.org/wiki/Changes/Silverblue_Kinoite_readonly_sysroot
+ConditionPathExists=!/var/lib/.ostree_sysroot_readonly
+RequiresMountsFor=/sysroot /boot
+
+[Service]
+ExecStart=/usr/libexec/ostree-sysroot-readonly.sh
+
+[Install]
+WantedBy=multi-user.target
